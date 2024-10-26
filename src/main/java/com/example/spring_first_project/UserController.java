@@ -1,17 +1,17 @@
 package com.example.spring_first_project;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller()
 public class UserController {
     @GetMapping("/user")
-    public String trangChiTiet(Model model) {
-        model.addAttribute("username", "Nguyen Van A");
+    public String trangChiTiet(@ModelAttribute("userName") String userName, Model model) {
+        model.addAttribute("userName", userName);
         return "user";
     }
 
@@ -22,8 +22,9 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
-    public void saveUser(@ModelAttribute("user") User user){
-        System.out.println("firstName: " + user.getFirstName());
-        System.out.println("lastName: " + user.getLastName());
+    public String saveUser(@ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
+        String fullName = user.getFirstName() + " " + user.getLastName();
+        redirectAttributes.addFlashAttribute("userName", fullName);
+        return "redirect:/user";
     }
 }
