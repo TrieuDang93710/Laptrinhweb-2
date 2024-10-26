@@ -7,10 +7,14 @@
 <body>
   <form th:action="@{/addUser}" th:object="${user}" method="POST">
     First Name:
-    <input type="text" th:field="*{firstName}"/>
+    <label>
+      <input type="text" th:field="*{firstName}"/>
+    </label>
     <br/>
     Last Name:
-    <input type="text" th:field="*{lastName}"/>
+    <label>
+      <input type="text" th:field="*{lastName}"/>
+    </label>
     <br/>
     <input type="submit" value="Create"/>
   </form>
