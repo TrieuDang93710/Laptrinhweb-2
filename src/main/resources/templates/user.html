@@ -1,11 +1,27 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title></title>
+    <title>User Demo</title>
 </head>
 <body>
-<h1>Thông tin chi tiết người dùng</h1>
-<!--/*@thymesVar id="userName" type=""*/-->
-<h2 th:text="${userName}">User: </h2>
+    <h1>Thông tin chi tiết người dùng</h1>
+    <h2 th:text="${userName}">User: </h2>
+    <h1>User Demo List</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${userDemo}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.firstName}"></td>
+            <td th:text="${user.lastName}"></td>
+        </tr>
+        </tbody>
+    </table>
 </body>
 </html>
