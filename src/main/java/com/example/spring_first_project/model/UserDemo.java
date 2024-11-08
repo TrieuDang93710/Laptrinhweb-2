@@ -1,5 +1,6 @@
 package com.example.spring_first_project.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -15,6 +16,11 @@ public class UserDemo {
 
     @Column()
     private String lastName;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id", nullable = false, referencedColumnName = "company_id")
+    @JsonBackReference
+    private Company company;
 
     public Integer getId() {
         return id;
@@ -38,5 +44,21 @@ public class UserDemo {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    @Override
+    public String toString() {
+        return "UserDemo{" +
+                "lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                '}';
     }
 }

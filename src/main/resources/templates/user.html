@@ -14,10 +14,13 @@
             <p class="logo"><a href="#">User Information</a></p>
             <ul class="navbar">
                 <li>
-                    <a href="/user">User list</a>
+                    <a href="/company">Company list</a>
                 </li>
                 <li>
                     <a href="/addUser">Add user</a>
+                </li>
+                <li>
+                    <a href="/addCompany">Add company</a>
                 </li>
             </ul>
         </div>
@@ -29,6 +32,7 @@
                     <th>ID</th>
                     <th>FirstName</th>
                     <th>LastName</th>
+                    <th>Company</th>
                     <th class="action">Action</th>
                 </tr>
                 </thead>
@@ -37,6 +41,7 @@
                     <td th:text="${user.id}"></td>
                     <td th:text="${user.firstName}"></td>
                     <td th:text="${user.lastName}"></td>
+                    <td th:text="${user.company.companyName}"></td>
                     <td class="action">
                         <img class="icon_action" th:src="@{/assets/delete.svg}" alt="">
                         <img class="icon_action" th:src="@{/assets/pencil.svg}" alt="">
