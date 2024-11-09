@@ -56,10 +56,10 @@
                   </ul>
                 </td>
                 <td class="action">
-                  <a th:href="@{/deleteCompany(id=${company.id})}">
+                  <a th:href="@{/deleteCompany/{id}(id=${company.id})}">
                     <img class="icon_action" th:src="@{/assets/delete.svg}" alt="">
                   </a>
-                  <a th:href="@{/updateCompany(id=${company.id})}">
+                  <a th:href="@{/updateCompany/{id}(id=${company.id})}">
                     <img class="icon_action" th:src="@{/assets/pencil.svg}" alt="">
                   </a>
                 </td>
