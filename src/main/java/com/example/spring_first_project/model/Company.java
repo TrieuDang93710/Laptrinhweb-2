@@ -1,5 +1,6 @@
 package com.example.spring_first_project.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -8,15 +9,15 @@ import java.util.List;
 @Table(name = "company")
 public class Company {
     @Id()
-    @Column()
+    @Column(name = "company_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column
     private String companyName;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "company_id")
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<UserDemo> users;
 
     public int getId() {
