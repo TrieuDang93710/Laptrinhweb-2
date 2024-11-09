@@ -49,13 +49,14 @@ public class CompanyController {
     // Thực hiện cập nhật
     @PostMapping("/updateCompany/{id}")
     public String updateCompany(@PathVariable int id, @ModelAttribute("company") Company company) {
-        company.setId(id); // Đảm bảo rằng ID được cập nhật
-        companyService.saveOrUpdate(company);
+//        company.setId(id); // Đảm bảo rằng ID được cập nhật
+//        companyService.saveOrUpdate(company);
+        companyService.updateCompany(id, company);
         return "redirect:/company";
     }
 
     @GetMapping("/deleteCompany/{id}")
-    public String deleteCompany(@PathVariable int id) {
+    public String deleteCompany(@PathVariable("id") int id) {
         companyService.deleteCompanyById(id);
         return "redirect:/company";
     }
