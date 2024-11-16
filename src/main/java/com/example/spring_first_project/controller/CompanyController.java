@@ -49,8 +49,6 @@ public class CompanyController {
     // Thực hiện cập nhật
     @PostMapping("/updateCompany/{id}")
     public String updateCompany(@PathVariable int id, @ModelAttribute("company") Company company) {
-//        company.setId(id); // Đảm bảo rằng ID được cập nhật
-//        companyService.saveOrUpdate(company);
         companyService.updateCompany(id, company);
         return "redirect:/company";
     }

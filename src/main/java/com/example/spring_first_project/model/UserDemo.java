@@ -18,7 +18,7 @@ public class UserDemo {
     private String lastName;
 
     @ManyToOne
-    @JoinColumn(name = "company_id", nullable = false, referencedColumnName = "company_id")
+    @JoinColumn(name = "company_id", nullable = true, referencedColumnName = "company_id")
     @JsonBackReference
     private Company company;
 
@@ -57,8 +57,10 @@ public class UserDemo {
     @Override
     public String toString() {
         return "UserDemo{" +
-                "lastName='" + lastName + '\'' +
+                "id=" + id +
                 ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", company=" + company +
                 '}';
     }
 }

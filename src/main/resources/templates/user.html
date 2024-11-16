@@ -41,10 +41,14 @@
                     <td th:text="${user.id}"></td>
                     <td th:text="${user.firstName}"></td>
                     <td th:text="${user.lastName}"></td>
-                    <td th:text="${user.company.companyName}"></td>
+                    <td th:text="${user.company != null ? user.company.companyName : 'No company'}"></td>
                     <td class="action">
-                        <img class="icon_action" th:src="@{/assets/delete.svg}" alt="">
-                        <img class="icon_action" th:src="@{/assets/pencil.svg}" alt="">
+                        <a th:href="@{/dateleUser/{id}(id=${user.id})}">
+                            <img class="icon_action" th:src="@{/assets/delete.svg}" alt="">
+                        </a>
+                        <a th:href="@{/dateleUser/{id}(id=${user.id})}">
+                            <img class="icon_action" th:src="@{/assets/pencil.svg}" alt="">
+                        </a>
                     </td>
                 </tr>
                 </tbody>
