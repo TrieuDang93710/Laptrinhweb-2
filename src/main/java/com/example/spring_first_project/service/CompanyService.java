@@ -1,6 +1,7 @@
 package com.example.spring_first_project.service;
 
 import com.example.spring_first_project.model.Company;
+import com.example.spring_first_project.model.UserDemo;
 import com.example.spring_first_project.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,12 @@ public class CompanyService {
         return companyRepository.save(company);
     }
     public void deleteCompanyById(int id) {
+        Company company = companyRepository.findById(id).orElse(null);
+        if (company != null && company.getUsers() != null) {
+            for (UserDemo user : company.getUsers()) {
+                user.setCompany(null); // Hủy liên kết giữa UserDemo và Company
+            }
+        }
         companyRepository.deleteById(id);
     }
     public void deleteAllCompanies() {
