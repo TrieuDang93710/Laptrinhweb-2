@@ -1,6 +1,5 @@
 package com.example.spring_first_project.controller;
 
-import com.example.spring_first_project.model.User;
 import com.example.spring_first_project.model.UserDemo;
 import com.example.spring_first_project.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -11,24 +10,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 @Controller()
 public class UserController {
-    private final UserService userService;
     private static final Logger logger = Logger.getLogger(UserController.class.getName());
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/user")
-    public String trangChiTiet(@ModelAttribute("userName") String userName, Model model) {
-        List<UserDemo> list = userService.getAllUser();
-        model.addAttribute("userDemo", list);
-        return "user";
-    }
 
     @GetMapping("/addUser")
     public String addUser(Model model) {
@@ -37,16 +29,21 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
-    public String saveUser(@ModelAttribute("user") UserDemo user, RedirectAttributes redirectAttributes) {
-        String fullName = user.getFirstName() + " " + user.getLastName();
-        redirectAttributes.addFlashAttribute("userName", fullName);
-        userService.saveOrUpdate(user);
+    public String saveUser(@ModelAttribute UserDemo user, RedirectAttributes redirectAttributes) {
+
         return "redirect:/user";
     }
 
+    @GetMapping("/loginUser")
+    public String loginForm(Model model) {
+        model.addAttribute("user", new UserDemo());
+        return "login";
+    }
+
+
     @GetMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable("id") int id) {
-        userService.deleteUserById(id);
+//        userService.deleteUserById(id);
         return "redirect:/user";
     }
 }

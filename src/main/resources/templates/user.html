@@ -22,6 +22,9 @@
                 <li>
                     <a href="/addCompany">Add company</a>
                 </li>
+                <li>
+                    <a href="/logout">Logout</a>
+                </li>
             </ul>
         </div>
         <div class="content">
@@ -33,15 +36,21 @@
                     <th>FirstName</th>
                     <th>LastName</th>
                     <th>Company</th>
+                    <th>Role</th>
                     <th class="action">Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user : ${userDemo}">
+                <tr th:each="user : ${user}">
                     <td th:text="${user.id}"></td>
                     <td th:text="${user.firstName}"></td>
                     <td th:text="${user.lastName}"></td>
                     <td th:text="${user.company != null ? user.company.companyName : 'No company'}"></td>
+                    <td class="user_list">
+                        <ul th:each="r : ${user.authorities}">
+                            <li th:text="${r.authority}" ></li>
+                        </ul>
+                    </td>
                     <td class="action">
                         <a th:href="@{/dateleUser/{id}(id=${user.id})}">
                             <img class="icon_action" th:src="@{/assets/delete.svg}" alt="">
