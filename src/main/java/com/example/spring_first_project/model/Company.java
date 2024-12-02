@@ -20,6 +20,20 @@ public class Company {
     @JsonManagedReference
     private List<UserDemo> users;
 
+    public Company() {
+    }
+
+    public Company(int id, String companyName, List<UserDemo> users) {
+        this.id = id;
+        this.companyName = companyName;
+        this.users = users;
+    }
+
+    public Company(String companyName, List<UserDemo> users) {
+        this.companyName = companyName;
+        this.users = users;
+    }
+
     public int getId() {
         return id;
     }

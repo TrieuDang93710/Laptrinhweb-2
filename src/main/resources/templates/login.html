@@ -14,18 +14,31 @@
         <div class="container">
             <div class="header">
                 <p class="logo"><a href="#">User Information</a></p>
+                <ul class="navbar">
+                    <li>
+                        <a href="/registration">Register</a>
+                    </li>
+                </ul>
             </div>
             <div class="content">
                 <h1 class="title">Login Page</h1>
                 <form class="form_control" th:action="@{/login}" method="POST">
+                    <div th:if="${param.error}">
+                        <div>Invalid username or password</div>
+                        <br/>
+                    </div>
+                    <div th:if="${param.logout}">
+                        <div>You have been logged out.</div>
+                        <br/>
+                    </div>
                     <label class="form_label">
                         Username:
-                        <input class="form_input" type="text" name="username"/>
+                        <input class="form_input" type="email" name="username" id="username" />
                     </label>
                     <br/>
                     <label class="form_label">
                         Password:
-                        <input class="form_input" type="password" name="password"/>
+                        <input class="form_input" type="password" name="password" id="password" />
                     </label>
                     <br/>
                     <input class="form_submit" type="submit" value="Sign-in"/>

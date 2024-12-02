@@ -2,8 +2,6 @@ package com.example.spring_first_project.controller;
 
 import com.example.spring_first_project.model.Company;
 import com.example.spring_first_project.service.CompanyService;
-import jakarta.websocket.server.PathParam;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
