@@ -1,12 +1,14 @@
 package com.example.spring_first_project.service;
 
-import com.example.spring_first_project.dto.UserRegistrationDto;
+import com.example.spring_first_project.dto.*;
 import com.example.spring_first_project.model.Company;
 import com.example.spring_first_project.model.Role;
 import com.example.spring_first_project.model.UserDemo;
 import com.example.spring_first_project.repository.CompanyRepository;
 import com.example.spring_first_project.repository.RoleRepository;
 import com.example.spring_first_project.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,34 +16,48 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import javax.security.auth.login.LoginException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
     private CompanyRepository companyRepository;
 
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserServiceImpl(
-            UserRepository userRepository,
-            BCryptPasswordEncoder bCryptPasswordEncoder,
-            RoleRepository roleRepository,
-            CompanyRepository companyRepository
-    ) {
-        super();
-        this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.roleRepository = roleRepository;
-        this.companyRepository = companyRepository;
-    }
+    @Autowired
+    private RoleService roleService;
 
+    @Override
+    public LoginResponse login(UserLoginDto userLoginDto) {
+        UserDemo user1 = findByUsername(userLoginDto.getEmail());
+        if (user1 == null) {
+            return new LoginResponse("Email not exist", false);
+        }
+        boolean passwordMatched = bCryptPasswordEncoder.matches(userLoginDto.getPassword(), user1.getPassword());
+
+        if (passwordMatched) {
+            Optional<UserDemo> user = Optional.ofNullable(findByUsername(userLoginDto.getEmail()));
+            if (user.isPresent()) {
+                return new LoginResponse(user.get().getEmail(), true);
+            }else {
+                return new LoginResponse("Login Failed", false);
+            }
+        }
+        else {
+            return new LoginResponse("Email or password not match", false);
+        }
+    }
 
     @Override
     public List<UserDemo> findAll() {
@@ -49,9 +65,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDemo save(UserRegistrationDto userRegistrationDto) {
-
+    public void save(UserRegistrationDto userRegistrationDto) {
         Company company = new Company("Company 1", new ArrayList<UserDemo>());
+        if (company != null) {
+
+        }
         companyRepository.save(company);
 
         UserDemo user = new UserDemo();
@@ -63,14 +81,144 @@ public class UserServiceImpl implements UserService {
         user.setCompany(company);
 
         Role role = new Role("ROLE_USER");
-        user.setAuthorities(Arrays.asList(role));
+        user.setAuthorities(List.of(role));
         roleRepository.save(role);
 
         company.getUsers().add(user);
 
         // Lưu người dùng
-        return userRepository.save(user);
+        userRepository.save(user);
+    }
 
+    @Override
+    public UserDemo saveUserWithApi(UserRegistrationApiDto userRegistrationApiDto) {
+        System.out.println("userRegistrationApiDto: " + userRegistrationApiDto.getAuthorities());
+
+        if (existedEmailChecking(userRegistrationApiDto.getEmail())) {
+            throw new RuntimeException("Email already in use");
+        }
+
+        Company company = companyRepository.findById(userRegistrationApiDto.getCompany()).orElseThrow(
+                () -> new UsernameNotFoundException("Company not found")
+        );
+
+        UserDemo user = new UserDemo();
+        user.setFirstName(userRegistrationApiDto.getFirstName());
+        user.setLastName(userRegistrationApiDto.getLastName());
+        user.setEmail(userRegistrationApiDto.getEmail());
+        user.setPassword(bCryptPasswordEncoder.encode(userRegistrationApiDto.getPassword()));
+        user.setCompany(company);
+
+
+        // Add role
+        List<Role> roles = new ArrayList<>();
+        for (String roleName : userRegistrationApiDto.getAuthorities()) {
+            Role roleExisted = roleService.getRoleByName(roleName);
+            if (roleExisted == null) {
+                System.out.println(roleName);
+                Role role = new Role(roleName);
+                roleRepository.save(role);
+                roles.add(role);
+            }else {
+                System.out.println(roleExisted);
+                roles.add(roleExisted);
+            }
+        }
+
+        user.setAuthorities(roles);
+        UserDemo newUser = userRepository.save(user);
+
+        // Update user in company
+        company.getUsers().add(newUser);
+        companyRepository.save(company);
+        System.out.println("company:" + company);
+
+        return newUser;
+    }
+
+    @Override
+    public UserDemo updateUserWithApi(UserUpdateApiDto userUpdateApiDto, int id) {
+        UserDemo user = userRepository.findById(id).orElseThrow(
+                () -> new UsernameNotFoundException("User not found")
+        );
+
+        Company company = companyRepository.findById(userUpdateApiDto.getCompany()).orElseThrow(
+                () -> new UsernameNotFoundException("Company not found")
+        );
+
+        user.setFirstName(userUpdateApiDto.getFirstName());
+        user.setLastName(userUpdateApiDto.getLastName());
+        user.setEmail(userUpdateApiDto.getEmail());
+        user.setPassword(bCryptPasswordEncoder.encode(userUpdateApiDto.getPassword()));
+        user.setCompany(company);
+
+        // Add role
+        List<Role> roles = new ArrayList<>();
+        for (String roleName : userUpdateApiDto.getAuthorities()) {
+            Role roleExisted = roleService.getRoleByName(roleName);
+            if (roleExisted == null) {
+                System.out.println(roleName);
+                Role role = new Role(roleName);
+                roleRepository.save(role);
+                roles.add(role);
+            }else {
+                System.out.println(roleExisted);
+                roles.add(roleExisted);
+            }
+        }
+
+        user.setAuthorities(roles);
+        UserDemo updateUser = userRepository.save(user);
+
+        // Update user in company
+        company.getUsers().add(updateUser);
+        companyRepository.save(company);
+        System.out.println("company:" + company);
+
+        return updateUser;
+    }
+
+    @Override
+    public void deleteUserWithApi(int id) {
+
+        UserDemo user =  userRepository.findById(id).orElseThrow(
+                () -> new UsernameNotFoundException("User not found")
+        );
+
+        Company company = companyRepository.findById(id).orElse(null);
+
+        if (user != null && user.getCompany() != null) {
+            user.setCompany(null);
+        }
+        userRepository.delete(user);
+    }
+
+    @Override
+    public UserDemo findByUsername(String username) {
+        return userRepository.findByEmail(username);
+    }
+
+    @Override
+    public UserDemo getUserById(int id) {
+
+        UserDemo user;
+        user = userRepository.findById(id).get();
+        return user;
+    }
+
+    @Override
+    public Boolean existedEmailChecking(String email) {
+        UserDemo user = userRepository.findByEmail(email);
+        return user != null;
+    }
+
+    @Override
+    public Collection<Role> getUserRoles(int id) {
+        UserDemo user = userRepository.findById(id).orElseThrow(
+                () -> new UsernameNotFoundException("User not found")
+        );
+
+        return user.getAuthorities();
     }
 
     @Override

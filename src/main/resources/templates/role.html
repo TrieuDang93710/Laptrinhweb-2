@@ -49,14 +49,14 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="role : ${roles}">
-        <td th:text="${role.id}"></td>
-        <td th:text="${role.authority}"></td>
+      <tr th:each="rol : ${roles}">
+        <td th:text="${rol.id}"></td>
+        <td th:text="${rol.authority}"></td>
         <td class="action">
-          <a th:href="@{/deleteCompany/{id}(id=${role.id})}">
+          <a th:href="@{/deleteCompany/{id}(id=${rol.id})}">
             <img class="icon_action" th:src="@{/assets/delete.svg}" alt="">
           </a>
-          <a th:href="@{/updateCompany/{id}(id=${role.id})}">
+          <a th:href="@{/updateCompany/{id}(id=${rol.id})}">
             <img class="icon_action" th:src="@{/assets/pencil.svg}" alt="">
           </a>
         </td>
