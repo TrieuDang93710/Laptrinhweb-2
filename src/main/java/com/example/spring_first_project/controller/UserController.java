@@ -1,36 +1,39 @@
 package com.example.spring_first_project.controller;
 
+import com.example.spring_first_project.dto.UserRegistrationDto;
 import com.example.spring_first_project.model.UserDemo;
-import com.example.spring_first_project.service.UserService;
+import com.example.spring_first_project.service.UserServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.logging.Logger;
 
 @Controller()
+@RequestMapping("/")
 public class UserController {
-    private static final Logger logger = Logger.getLogger(UserController.class.getName());
-    private final UserService userService;
 
-    public UserController(UserService userService) {
+    private UserServiceImpl userService;
+
+    public UserController(UserServiceImpl userService) {
+        super();
         this.userService = userService;
     }
 
+    @ModelAttribute("user")
+    public UserRegistrationDto userRegistrationDto() {
+        return new UserRegistrationDto();
+    }
 
     @GetMapping("/addUser")
-    public String addUser(Model model) {
-        model.addAttribute("user", new UserDemo());
+    public String addCompany() {
         return "addUser";
     }
 
     @PostMapping("/addUser")
-    public String saveUser(@ModelAttribute UserDemo user, RedirectAttributes redirectAttributes) {
-
+    public String addCompany(@ModelAttribute("user") UserRegistrationDto userRegistrationDto, RedirectAttributes redirectAttributes) {
+        userService.save(userRegistrationDto);
         return "redirect:/user";
     }
 
@@ -39,7 +42,6 @@ public class UserController {
         model.addAttribute("user", new UserDemo());
         return "login";
     }
-
 
     @GetMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable("id") int id) {

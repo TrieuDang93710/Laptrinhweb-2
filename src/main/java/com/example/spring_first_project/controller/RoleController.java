@@ -1,7 +1,7 @@
 package com.example.spring_first_project.controller;
 
 import com.example.spring_first_project.model.Role;
-import com.example.spring_first_project.service.RoleService;
+import com.example.spring_first_project.service.RoleServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +14,9 @@ import java.util.List;
 @Controller()
 public class RoleController {
 
-    private RoleService roleService;
+    private RoleServiceImpl roleService;
 
-    public RoleController(RoleService roleService) {
+    public RoleController(RoleServiceImpl roleService) {
         this.roleService = roleService;
     }
 
