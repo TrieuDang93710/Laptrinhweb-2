@@ -43,8 +43,8 @@ public class SecurityConfig {
                 .headers().frameOptions().disable() // Tùy chọn cho H2 Console
                 .and()
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/registration/**", "/css/**", "/js/**", "/img/**").permitAll()
-                        .requestMatchers("/addUser").hasAnyRole("ADMIN")
+                        .requestMatchers("/registration/**", "/api/**", "/**", "/css/**", "/js/**", "/img/**").permitAll()
+                        .requestMatchers("/addUser").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

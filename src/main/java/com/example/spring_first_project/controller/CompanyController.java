@@ -1,7 +1,8 @@
 package com.example.spring_first_project.controller;
 
+import com.example.spring_first_project.dto.CompanyApiDto;
 import com.example.spring_first_project.model.Company;
-import com.example.spring_first_project.service.CompanyService;
+import com.example.spring_first_project.service.CompanyServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +12,9 @@ import java.util.List;
 @Controller()
 public class CompanyController {
 
-    private final CompanyService companyService;
+    private final CompanyServiceImpl companyService;
 
-    public CompanyController(CompanyService companyService) {
+    public CompanyController(CompanyServiceImpl companyService) {
         this.companyService = companyService;
     }
 
@@ -31,7 +32,7 @@ public class CompanyController {
     }
 
     @PostMapping("addCompany")
-    public String addCompany(@ModelAttribute("company") Company company) {
+    public String addCompany(@ModelAttribute("company") CompanyApiDto company) {
         companyService.saveOrUpdate(company);
         return "company";
     }
@@ -46,7 +47,7 @@ public class CompanyController {
 
     // Thực hiện cập nhật
     @PostMapping("/updateCompany/{id}")
-    public String updateCompany(@PathVariable int id, @ModelAttribute("company") Company company) {
+    public String updateCompany(@PathVariable int id, @ModelAttribute("company") CompanyApiDto company) {
         companyService.updateCompany(id, company);
         return "redirect:/company";
     }

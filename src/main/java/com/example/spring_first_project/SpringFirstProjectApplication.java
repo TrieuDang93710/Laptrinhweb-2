@@ -10,6 +10,10 @@ public class SpringFirstProjectApplication {
 		SpringApplication.run(SpringFirstProjectApplication.class, args);
 		System.out.println("Hello World");
 		System.out.println("Hello, @voductien");
+		System.out.println("Hello, @phamxuandu");
+		System.out.println("Hello, @trannhathuy");
+		System.out.println("Hello, @phamtuankiet");
+		System.out.println("Hello, @dangbinhtrieu");
 	}
 
 }

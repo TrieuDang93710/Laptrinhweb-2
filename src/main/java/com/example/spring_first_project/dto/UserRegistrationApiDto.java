@@ -1,9 +1,8 @@
 package com.example.spring_first_project.dto;
 
-
 import java.util.List;
 
-public class UserRegistrationDto {
+public class UserRegistrationApiDto {
 
     private String firstName;
     private String lastName;
@@ -11,19 +10,18 @@ public class UserRegistrationDto {
     private String password;
 
     private int company;
-    private String authorities;
 
+    private List<String> authorities;
 
-    public UserRegistrationDto(String firstName, String lastName, String email, String password, int company, String authorities) {
+    public UserRegistrationApiDto() {}
+
+    public UserRegistrationApiDto(String firstName, String lastName, String email, String password, int company, List<String> authorities) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.company = company;
         this.authorities = authorities;
-    }
-
-    public UserRegistrationDto() {
     }
 
     public String getFirstName() {
@@ -66,11 +64,11 @@ public class UserRegistrationDto {
         this.company = company;
     }
 
-    public String getAuthorities() {
+    public List<String> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(String authorities) {
+    public void setAuthorities(List<String> authorities) {
         this.authorities = authorities;
     }
 }
