@@ -16,7 +16,7 @@ public class Company {
     @Column
     private String companyName;
 
-    @OneToMany(mappedBy = "company", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "company" , cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonManagedReference
     private List<UserDemo> users;
 
@@ -26,6 +26,11 @@ public class Company {
     public Company(int id, String companyName, List<UserDemo> users) {
         this.id = id;
         this.companyName = companyName;
+        this.users = users;
+    }
+
+    public Company(int id, List<UserDemo> users) {
+        this.id = id;
         this.users = users;
     }
 

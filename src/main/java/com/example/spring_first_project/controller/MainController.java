@@ -17,11 +17,6 @@ public class MainController {
         this.userService = userService;
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
-
     @GetMapping("/")
     public String index() {
         return "index";
@@ -33,5 +28,4 @@ public class MainController {
         model.addAttribute("user", list);
         return "user";
     }
-
 }

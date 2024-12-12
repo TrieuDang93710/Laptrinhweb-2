@@ -4,9 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
 @Entity
 @Table(name = "user_demo", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 public class UserDemo {
@@ -39,14 +36,16 @@ public class UserDemo {
             inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
     private Collection<Role> authorities;
+    private String token;
 
-    public UserDemo(String firstName, String lastName, String email, String password, Company company, Collection<Role> authorities) {
+    public UserDemo(String firstName, String lastName, String email, String password, Company company, Collection<Role> authorities, String token) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.company = company;
         this.authorities = authorities;
+        this.token = token;
     }
 
     public UserDemo() {
@@ -106,5 +105,13 @@ public class UserDemo {
 
     public void setAuthorities(Collection<Role> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

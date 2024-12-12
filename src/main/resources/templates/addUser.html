@@ -48,10 +48,15 @@
                   <input class="form_input" type="password" th:field="*{password}"/>
               </label>
               <br/>
-              <!--      <label class="form_label">-->
-              <!--        Company ID:-->
-              <!--        <input class="form_input" type="text" th:field="*{company}"/>-->
-              <!--      </label>-->
+              <label class="form_label">
+                  Company:
+                  <input class="form_input" type="number" th:field="*{company}"/>
+              </label>
+              <br/>
+              <label class="form_label">
+                  Role:
+                  <input class="form_input" type="text" th:field="*{authorities}"/>
+              </label>
               <br/>
               <input class="form_submit" type="submit" value="Create"/>
           </form>

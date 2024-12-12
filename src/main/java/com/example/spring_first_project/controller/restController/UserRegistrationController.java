@@ -1,4 +1,4 @@
-package com.example.spring_first_project.controller;
+package com.example.spring_first_project.controller.restController;
 
 import com.example.spring_first_project.dto.UserRegistrationDto;
 import com.example.spring_first_project.service.UserService;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserRegistrationController {
 
     private UserService userService;
-
 
     public UserRegistrationController(UserService userService) {
         super();
