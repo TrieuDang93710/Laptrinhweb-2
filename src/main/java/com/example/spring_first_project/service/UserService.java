@@ -17,6 +17,7 @@ public interface UserService extends UserDetailsService {
     void save(UserRegistrationDto userRegistrationDto);
     UserDemo saveUserWithApi(UserRegistrationApiDto userRegistrationApiDto);
     UserDemo updateUserWithApi(UserUpdateApiDto userUpdateApiDto, int id);
+    UserDemo decentralizationWithApi(DecentralizationDto decentralizationDto, int id);
     void deleteUserWithApi(int id);
     UserDemo findByUsername(String username);
     UserDemo getUserById(int id);

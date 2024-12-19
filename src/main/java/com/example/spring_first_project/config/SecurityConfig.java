@@ -49,17 +49,12 @@ public class SecurityConfig {
                     httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable);
                 })
                 .csrf().disable()
-//                .headers().frameOptions().disable()
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/registration/**", "/api/**", "/api/auth/login", "/auth/generateToken", "/h2-console/*", "/**", "/css/**", "/js/**", "/img/**").permitAll()
-                        .requestMatchers("/api/users").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
-//                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/registration/**", "api/company/**", "api/roles", "api/user/**", "api/decentralization/**", "api/users/**", "/api/companies", "/api/company/**", "/api/auth/**", "/api/auth/login", "/api/auth/generateToken", "/h2-console/**").permitAll()
+                        .requestMatchers("/api/users").hasAnyAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/companies").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
-//                .formLogin(form -> form
-//                        .loginPage("/login").defaultSuccessUrl("/", true)
-//                        .permitAll()
-//                )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login").permitAll()
                 )
