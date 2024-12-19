@@ -21,9 +21,10 @@ public class JwtService {
 
     public static final long EXPIRATION_TIME = 1000 * 60 * 60;
 
-    // Generate token with given user name
-    public String generateToken(String userName) {
+    // Generate token with given user name and role
+    public String generateToken(String userName, String role) {
         Map<String, Object> claims = new HashMap<>();
+//        claims.put("role", role);
         return createToken(claims, userName);
     }
 
@@ -77,25 +78,5 @@ public class JwtService {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
-
-//    public boolean validateToken(String token, String email) {
-//        final String extractedEmail = extractEmail(token);
-//        return (extractedEmail.equals(email) && !isTokenExpired(token));
-//    }
-//
-//    public boolean isTokenExpired(String token) {
-//        return extractExpiration(token).before(new Date());
-//    }
-//
-//    public Date extractExpiration(String token) {
-//        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getExpiration();
-//    }
-//
-//    public String extractEmail(String token) {
-//        return extractAllClaims(token).getSubject();
-//    }
-//
-//    public Claims extractAllClaims(String token) {
-//        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-//    }
+    
 }

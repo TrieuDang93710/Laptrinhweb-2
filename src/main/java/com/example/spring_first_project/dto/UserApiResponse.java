@@ -1,15 +1,13 @@
-package com.example.spring_first_project.model;
+package com.example.spring_first_project.dto;
 
+import com.example.spring_first_project.model.Company;
+import com.example.spring_first_project.model.Role;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Collection;
-@Entity
-@Table(name = "user_demo", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
-public class UserDemo {
-    @Id()
-    @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
+public class UserApiResponse {
     private Integer id;
 
     @Column()
@@ -36,19 +34,9 @@ public class UserDemo {
             inverseJoinColumns = {@JoinColumn(name = "role_id")}
     )
     private Collection<Role> authorities;
-    private String token;
 
-    public UserDemo(String firstName, String lastName, String email, String password, Company company, Collection<Role> authorities, String token) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.company = company;
-        this.authorities = authorities;
-        this.token = token;
-    }
-
-    public UserDemo(String firstName, String lastName, String email, String password, Company company, Collection<Role> authorities) {
+    public UserApiResponse(Integer id, String firstName, String lastName, String email, String password, Company company, Collection<Role> authorities) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -57,7 +45,23 @@ public class UserDemo {
         this.authorities = authorities;
     }
 
-    public UserDemo() {
+    public UserApiResponse(String firstName, String lastName, String email, String password, Company company, Collection<Role> authorities) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.company = company;
+        this.authorities = authorities;
+    }
+
+    public UserApiResponse(String email, String password, Company company, Collection<Role> authorities) {
+        this.email = email;
+        this.password = password;
+        this.company = company;
+        this.authorities = authorities;
+    }
+
+    public UserApiResponse() {
     }
 
     public Integer getId() {
@@ -114,13 +118,5 @@ public class UserDemo {
 
     public void setAuthorities(Collection<Role> authorities) {
         this.authorities = authorities;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }

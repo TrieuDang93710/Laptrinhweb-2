@@ -52,14 +52,20 @@ public class UserServiceImpl implements UserService {
             UserDemo user = userRepository.findByEmail(userLoginDto.getEmail());
             user.setToken(token);
             userRepository.save(user);
-            return new LoginResponse(userLoginDto, token);
+            System.out.println(user.getAuthorities());
+            for (Role role : user.getAuthorities()){
+                System.out.println(role);
+                System.out.println(role.getAuthority());
+                return new LoginResponse(userLoginDto, token, role.getAuthority(), user.getEmail());
+            }
         }
         throw new UsernameNotFoundException(userLoginDto.getEmail());
     }
 
     @Override
     public List<UserDemo> findAll() {
-        return userRepository.findAll();
+        List<UserDemo> users = userRepository.findAll();
+        return users;
     }
 
     @Override
@@ -174,6 +180,31 @@ public class UserServiceImpl implements UserService {
         System.out.println("company:" + company);
 
         return updateUser;
+    }
+
+    @Override
+    public UserDemo decentralizationWithApi(DecentralizationDto decentralizationDto, int id) {
+        UserDemo user = userRepository.findById(id).orElseThrow(
+                () -> new UsernameNotFoundException("User not found")
+        );
+
+        // Add role
+        List<Role> roles = new ArrayList<>();
+        for (String roleName : decentralizationDto.getAuthorities()) {
+            Role roleExisted = roleService.getRoleByName(roleName);
+            if (roleExisted == null) {
+                System.out.println(roleName);
+                Role role = new Role(roleName);
+                roleRepository.save(role);
+                roles.add(role);
+            }else {
+                System.out.println(roleExisted);
+                roles.add(roleExisted);
+            }
+        }
+        user.setAuthorities(roles);
+        UserDemo decentralizationUser = userRepository.save(user);
+        return decentralizationUser;
     }
 
     @Override
