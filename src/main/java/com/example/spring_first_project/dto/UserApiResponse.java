@@ -45,6 +45,15 @@ public class UserApiResponse {
         this.authorities = authorities;
     }
 
+    public UserApiResponse(Integer id, String firstName, String lastName, String email, String password, Collection<Role> authorities) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.authorities = authorities;
+    }
+
     public UserApiResponse(String firstName, String lastName, String email, String password, Company company, Collection<Role> authorities) {
         this.firstName = firstName;
         this.lastName = lastName;

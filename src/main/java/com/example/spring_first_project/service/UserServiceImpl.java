@@ -102,17 +102,27 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Email already in use");
         }
 
-        Company company = companyRepository.findById(userRegistrationApiDto.getCompany()).orElseThrow(
-                () -> new UsernameNotFoundException("Company not found")
-        );
-
         UserDemo user = new UserDemo();
         user.setFirstName(userRegistrationApiDto.getFirstName());
         user.setLastName(userRegistrationApiDto.getLastName());
         user.setEmail(userRegistrationApiDto.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(userRegistrationApiDto.getPassword()));
-        user.setCompany(company);
 
+        Integer companyId = userRegistrationApiDto.getCompany();
+        Company company = null;
+
+        if (companyId != null) {
+            company = companyRepository.findById(companyId).orElse(null);
+            if (company == null) {
+                System.out.println("Company with ID " + companyId + " not found. User will be created without a company.");
+                user.setCompany(null);
+            } else {
+                user.setCompany(company);
+            }
+        } else {
+            System.out.println("Company ID is null. User will be created without a company.");
+            user.setCompany(null);
+        }
 
         // Add role
         List<Role> roles = new ArrayList<>();
@@ -133,9 +143,11 @@ public class UserServiceImpl implements UserService {
         UserDemo newUser = userRepository.save(user);
 
         // Update user in company
-        company.getUsers().add(newUser);
-        companyRepository.save(company);
-        System.out.println("company:" + company);
+        if (company != null) {
+            company.getUsers().add(newUser);
+            companyRepository.save(company);
+            System.out.println("company:" + company);
+        }
 
         return newUser;
     }

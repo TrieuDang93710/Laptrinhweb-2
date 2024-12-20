@@ -43,20 +43,36 @@ public class RestUserController {
         List<UserApiResponse> userResponses = new ArrayList<>();
         UserApiResponse userApiResponse = null;
         for (UserDemo user : users) {
-            Company company = companyRepository.findById(user.getCompany().getId()).get();
-            for(Role role : user.getAuthorities()){
-                Role rol = new Role(role.getAuthority());
-                userApiResponse = new UserApiResponse(
-                        user.getId(),
-                        user.getFirstName(),
-                        user.getLastName(),
-                        user.getEmail(),
-                        bCryptPasswordEncoder.encode(user.getPassword()),
-                        company,
-                        List.of(rol)
-                );
+            if (user.getCompany() != null) {
+                Company company = companyRepository.findById(user.getCompany().getId()).orElse(null);
+                for(Role role : user.getAuthorities()){
+                    Role rol = new Role(role.getAuthority());
+                    userApiResponse = new UserApiResponse(
+                            user.getId(),
+                            user.getFirstName(),
+                            user.getLastName(),
+                            user.getEmail(),
+                            bCryptPasswordEncoder.encode(user.getPassword()),
+                            company,
+                            List.of(rol)
+                    );
+                }
+                userResponses.add(userApiResponse);
+            }else {
+                for(Role role : user.getAuthorities()){
+                    Role rol = new Role(role.getAuthority());
+                    userApiResponse = new UserApiResponse(
+                            user.getId(),
+                            user.getFirstName(),
+                            user.getLastName(),
+                            user.getEmail(),
+                            bCryptPasswordEncoder.encode(user.getPassword()),
+                            List.of(rol)
+                    );
+                }
+                userResponses.add(userApiResponse);
             }
-            userResponses.add(userApiResponse);
+
         }
         return  ResponseEntity.ok(userResponses);
     }
